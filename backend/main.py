@@ -1,3 +1,33 @@
-print("Hello World!")
+from fastapi import FastAPI
+from logic import create_game, update_game
+from schemas import Game, AnswerRequest
 
-#This is a test.
+app = FastAPI()
+
+games: dict[str, Game] = {}
+
+@app.get("/")
+def root() -> dict:
+    return {"status": "ok"}
+
+@app.post("/create-game", response_model=Game)
+def create_game_route():
+    new_game = create_game()
+    
+    games[new_game.game_id] = new_game
+
+    return new_game
+
+
+@app.post("/answer", response_model=Game)
+def process_answer_route(request: AnswerRequest) -> Game:
+    updated_game = update_game(request.answer, games[request.game_id])
+
+    return updated_game
+
+
+
+
+
+
+
