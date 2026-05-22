@@ -5,41 +5,70 @@ import Score from "./components/Score";
 import Lives from "./components/Lives";
 import { useState } from "react";
 
+const BASE_URL = "http://127.0.0.1:8000";
+
 const App = () => {
-  const [startButtonClicked, setStartButtonClicked] = useState(false);
+  const [hasGameStarted, setStartGame] = useState(false);
   const [gameOver, setGameOver] = useState(false);
+  const [gameId, setGameId] = useState("");
+  const [score, setScore] = useState(-1);
+  const [lives, setLives] = useState(-1);
+  const [currentNote, setCurrentNote] = useState("");
+
+  const startGame = async () => {
+    setStartGame(true);
+    console.log(`${BASE_URL}/create-game`);
+    const response = await fetch(`${BASE_URL}/create-game`, { method: "POST" });
+
+    const new_game = await response.json();
+
+    setGameId(new_game.game_id);
+    setScore(new_game.score);
+    setLives(new_game.lives);
+    setCurrentNote(new_game.current_note);
+  };
+
+  const updateGame = async (decision: "new" | "seen") => {
+    const response = await fetch(`${BASE_URL}/answer`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ game_id: gameId, answer: decision }),
+    });
+
+    const updated_game = await response.json();
+
+    setScore(updated_game.score);
+    setLives(updated_game.lives);
+    setCurrentNote(updated_game.current_note);
+
+    if (updated_game.lives === 0) {
+      setGameOver(true);
+    }
+  };
+
   return (
     <div>
       <Title title="Note Recognition Test" />
-      {!startButtonClicked && (
+      {!hasGameStarted && (
         <>
-          <Button
-            name="Start Test"
-            onClick={() => setStartButtonClicked(true)}
-          />
+          <Button name="Start Test" onClick={startGame} />
         </>
       )}
 
-      {startButtonClicked && !gameOver && (
+      {hasGameStarted && !gameOver && (
         <>
-          <Score name="Score" score={0} />
-          <Lives count={3} />
-          <Note name="NOTE" />
-          <Button
-            name="New"
-            onClick={() => console.log("New Decision Clicked")}
-          />
-          <Button
-            name="Seen"
-            onClick={() => console.log("Seen Decision Clicked")}
-          />
+          <Score name="Score" score={score} />
+          <Lives count={lives} />
+          <Note name={currentNote} />
+          <Button name="New" onClick={() => updateGame("new")} />
+          <Button name="Seen" onClick={() => updateGame("seen")} />
           <Button name="End Game" onClick={() => setGameOver(true)} />
         </>
       )}
 
       {gameOver && (
         <>
-          <Score name="Final Score" score={0} />
+          <Score name="Final Score" score={score} />
         </>
       )}
     </div>
