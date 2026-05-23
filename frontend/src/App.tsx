@@ -17,7 +17,7 @@ const App = () => {
 
   const startGame = async () => {
     setStartGame(true);
-    console.log(`${BASE_URL}/create-game`);
+
     const response = await fetch(`${BASE_URL}/create-game`, { method: "POST" });
 
     const new_game = await response.json();
