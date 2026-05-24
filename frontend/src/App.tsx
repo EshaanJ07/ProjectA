@@ -6,10 +6,16 @@ import Lives from "./components/Lives";
 import { useState } from "react";
 import { noteMap } from "./assets/audio/noteMap.ts";
 
-
-
 const BASE_URL = "http://127.0.0.1:8000";
 
+let noteAudio: HTMLAudioElement | null = null;
+const playNote = (note: keyof typeof noteMap) => {
+  noteAudio?.pause();
+  noteAudio = new Audio(noteMap[note]);
+  noteAudio.play();
+};
+
+console.log(typeof noteMap["C4"]);
 const App = () => {
   const [hasGameStarted, setStartGame] = useState(false);
   const [gameOver, setGameOver] = useState(false);
@@ -25,10 +31,11 @@ const App = () => {
 
     const new_game = await response.json();
 
+    playNote(new_game.current_note);
+    setCurrentNote(new_game.current_note);
     setGameId(new_game.game_id);
     setScore(new_game.score);
     setLives(new_game.lives);
-    setCurrentNote(new_game.current_note);
   };
 
   const updateGame = async (decision: "new" | "seen") => {
@@ -40,13 +47,17 @@ const App = () => {
 
     const updated_game = await response.json();
 
-    setScore(updated_game.score);
-    setLives(updated_game.lives);
+    if (updated_game.lives === 0) {
+      noteAudio?.pause();
+      setGameOver(true);
+      return;
+    }
+
+    playNote(updated_game.current_note);
     setCurrentNote(updated_game.current_note);
 
-    if (updated_game.lives === 0) {
-      setGameOver(true);
-    }
+    setScore(updated_game.score);
+    setLives(updated_game.lives);
   };
 
   return (
@@ -79,5 +90,3 @@ const App = () => {
 };
 
 export default App;
-
-
