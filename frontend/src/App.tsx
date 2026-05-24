@@ -4,6 +4,9 @@ import Note from "./components/Note";
 import Score from "./components/Score";
 import Lives from "./components/Lives";
 import { useState } from "react";
+import { noteMap } from "./assets/audio/noteMap.ts";
+
+
 
 const BASE_URL = "http://127.0.0.1:8000";
 
@@ -76,3 +79,5 @@ const App = () => {
 };
 
 export default App;
+
+
