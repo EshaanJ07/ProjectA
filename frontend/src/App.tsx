@@ -5,6 +5,7 @@ import Score from "./components/Score";
 import Lives from "./components/Lives";
 import { useState } from "react";
 import { noteMap } from "./assets/audio/noteMap.ts";
+import playButtonAudio from "./assets/audio/audioEffects.ts";
 
 const BASE_URL = "http://127.0.0.1:8000";
 
@@ -40,6 +41,7 @@ const App = () => {
   };
 
   const updateGame = async (decision: "new" | "seen") => {
+    playButtonAudio();
     const response = await fetch(`${BASE_URL}/answer`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
