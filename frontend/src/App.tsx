@@ -11,11 +11,11 @@ const BASE_URL = "http://127.0.0.1:8000";
 let noteAudio: HTMLAudioElement | null = null;
 const playNote = (note: keyof typeof noteMap) => {
   noteAudio?.pause();
-  noteAudio = new Audio(noteMap[note]);
+  noteAudio = noteMap[note];
+  noteAudio.currentTime = 0;
   noteAudio.play();
 };
 
-console.log(typeof noteMap["C4"]);
 const App = () => {
   const [hasGameStarted, setStartGame] = useState(false);
   const [gameOver, setGameOver] = useState(false);
