@@ -41,7 +41,6 @@ const App = () => {
   };
 
   const updateGame = async (decision: "new" | "seen") => {
-    playButtonAudio();
     const response = await fetch(`${BASE_URL}/answer`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },

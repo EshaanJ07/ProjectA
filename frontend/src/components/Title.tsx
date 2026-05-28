@@ -5,7 +5,7 @@ interface Props {
 const Title = ({ title }: Props) => {
   return (
     <div>
-      <h1>{title}</h1>
+      <h1 className="text-green-500">{title}</h1>
     </div>
   );
 };
