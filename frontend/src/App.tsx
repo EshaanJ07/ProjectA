@@ -6,6 +6,13 @@ import Lives from "./components/Lives";
 import { useState } from "react";
 import { noteMap } from "./assets/audio/noteMap.ts";
 import playButtonAudio from "./assets/audio/audioEffects.ts";
+import Header from "./components/Header.tsx";
+import AudioCircle from "./components/AudioCircle.tsx";
+import AudioMemoryTitle from "./components/AudioMemoryTitle.tsx";
+import Divider from "./components/Divider.tsx";
+import GameDescription from "./components/GameDescription.tsx";
+import StartButton from "./components/StartButton.tsx";
+import Footer from "./components/Footer.tsx";
 
 const BASE_URL = "http://127.0.0.1:8000";
 
@@ -63,14 +70,33 @@ const App = () => {
   };
 
   return (
-    <div>
-      <Title title="Note Recognition Test" />
+    <>
+      <Header />
+      <main className="pt-25">
+        <div className="mx-2">
+          <AudioMemoryTitle />
+        </div>
+        <Divider />
+        <div className="mx-3.5 my-2">
+          <GameDescription />
+        </div>
+        <div className="w-15 mx-3.5">
+          <Divider />
+        </div>
+        <div className="flex-center my-5">
+          <AudioCircle />
+        </div>
+        <div className="flex justify-center">
+          <StartButton />
+        </div>
+        <Footer />
+      </main>
+
       {!hasGameStarted && (
         <>
           <Button name="Start Test" onClick={startGame} />
         </>
       )}
-
       {hasGameStarted && !gameOver && (
         <>
           <Score name="Score" score={score} />
@@ -81,13 +107,12 @@ const App = () => {
           <Button name="End Game" onClick={() => setGameOver(true)} />
         </>
       )}
-
       {gameOver && (
         <>
           <Score name="Final Score" score={score} />
         </>
       )}
-    </div>
+    </>
   );
 };
 
