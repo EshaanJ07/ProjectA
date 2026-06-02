@@ -1,4 +1,3 @@
-import Title from "./components/Title";
 import Button from "./components/Button";
 import Note from "./components/Note";
 import Score from "./components/Score";
@@ -72,31 +71,26 @@ const App = () => {
   return (
     <>
       <Header />
-      <main className="pt-25">
+      <main className="pt-15">
         <div className="mx-2">
           <AudioMemoryTitle />
         </div>
-        <Divider />
-        <div className="mx-3.5 my-2">
-          <GameDescription />
-        </div>
-        <div className="w-15 mx-3.5">
-          <Divider />
+        <div className="flex justify-center my-10 translate-y-5 h-20">
+          {!hasGameStarted && <GameDescription />}
         </div>
         <div className="flex-center my-5">
           <AudioCircle />
         </div>
         <div className="flex justify-center">
-          <StartButton />
+          {!hasGameStarted && (
+            <>
+              <StartButton onClick={startGame} />
+            </>
+          )}
         </div>
         <Footer />
       </main>
 
-      {!hasGameStarted && (
-        <>
-          <Button name="Start Test" onClick={startGame} />
-        </>
-      )}
       {hasGameStarted && !gameOver && (
         <>
           <Score name="Score" score={score} />

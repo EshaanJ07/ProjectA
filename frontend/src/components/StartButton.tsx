@@ -1,10 +1,18 @@
-const StartButton = () => {
+interface Props {
+  onClick?: () => void;
+}
+
+const StartButton = ({ onClick }: Props) => {
   return (
-    <div className="relative rounded-full h-10 w-25 bg-[#6366F1] border-[#312E81] border-2 drop-shadow-2xl">
-      <span className="absolute flex-center h-10 w-25 font-light text-[24px] ">
+    <button
+      className="transition hover:bg-[#818CF8] active:bg-[#818CF8] hover:border-[#3730A3] active:border-[#3730A3] hover:scale-105 active:scale-105 btn relative rounded-full h-10 w-25 bg-[#ffffff] border-[#000000] border-2 shadow-[0_4px_4px_1px_rgba(0,0,0,0.25)] drop-shadow-2xl"
+      onClick={onClick}
+      type="button"
+    >
+      <span className="absolute flex-center inset-0 font-normal text-[26px] ">
         begin
       </span>
-    </div>
+    </button>
   );
 };
 
