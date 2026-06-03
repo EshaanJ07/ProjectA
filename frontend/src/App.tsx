@@ -1,17 +1,8 @@
-import Button from "./components/Button";
-import Note from "./components/Note";
 import Score from "./components/Score";
-import Lives from "./components/Lives";
 import { useState } from "react";
 import { noteMap } from "./assets/audio/noteMap.ts";
-import playButtonAudio from "./assets/audio/audioEffects.ts";
-import Header from "./components/Header.tsx";
-import AudioCircle from "./components/AudioCircle.tsx";
-import AudioMemoryTitle from "./components/AudioMemoryTitle.tsx";
-import Divider from "./components/Divider.tsx";
-import GameDescription from "./components/GameDescription.tsx";
-import StartButton from "./components/StartButton.tsx";
-import Footer from "./components/Footer.tsx";
+import LandingScreen from "./components/LandingScreen";
+import GameScreen from "./components/GameScreen";
 
 const BASE_URL = "http://127.0.0.1:8000";
 
@@ -70,37 +61,17 @@ const App = () => {
 
   return (
     <>
-      <Header />
-      <main className="pt-15">
-        <div className="mx-2">
-          <AudioMemoryTitle />
-        </div>
-        <div className="flex justify-center my-10 translate-y-5 h-20">
-          {!hasGameStarted && <GameDescription />}
-        </div>
-        <div className="flex-center my-5">
-          <AudioCircle />
-        </div>
-        <div className="flex justify-center">
-          {!hasGameStarted && (
-            <>
-              <StartButton onClick={startGame} />
-            </>
-          )}
-        </div>
-        <Footer />
-      </main>
+      {!hasGameStarted && <LandingScreen startGame={startGame} />}
 
       {hasGameStarted && !gameOver && (
-        <>
-          <Score name="Score" score={score} />
-          <Lives count={lives} />
-          <Note name={currentNote} />
-          <Button name="New" onClick={() => updateGame("new")} />
-          <Button name="Seen" onClick={() => updateGame("seen")} />
-          <Button name="End Game" onClick={() => setGameOver(true)} />
-        </>
+        <GameScreen
+          score={score}
+          lives={lives}
+          currentNote={currentNote}
+          updateGame={updateGame}
+        />
       )}
+
       {gameOver && (
         <>
           <Score name="Final Score" score={score} />

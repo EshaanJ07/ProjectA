@@ -6,7 +6,7 @@ const AudioMemoryTitle = () => {
           audio memory
         </h1>
 
-        <div className="mt-1 border-t-[3px] border-[#000000] w-30"></div>
+        <div className="mt-1 border-t-[2px] border-[#000000] w-30"></div>
       </div>
     </>
   );
