@@ -17,7 +17,7 @@ const LandingScreen = ({ startGame }: Props) => {
         <div className="mx-2">
           <AudioMemoryTitle />
         </div>
-        <div className="flex justify-center my-10 translate-y-5 h-20">
+        <div className="flex justify-center my-10 h-20 translate-y-5">
           <GameDescription />
         </div>
         <div className="flex-center my-5">

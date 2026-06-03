@@ -22,11 +22,10 @@ const GameScreen = ({ score, lives, updateGame }: Props) => {
           <div className="mx-2">
             <AudioMemoryTitle />
           </div>
-          <div className="flex justify-center">
-            <div className="flex justify-center my-10 translate-y-5 h-20 gap-20 bg-[#93C5FD] w-fit px-5 rounded-[25px]">
-              <Score name="Score" score={score} />
-              <Lives count={lives} />
-            </div>
+
+          <div className="flex justify-center my-10 h-20 gap-20 border-2 border-[#000000] w-fit px-5 rounded-[25px] mx-auto translate-y-5">
+            <Score name="Score" score={score} />
+            <Lives count={lives} />
           </div>
 
           <div className="flex-center my-5">
