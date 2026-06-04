@@ -3,6 +3,7 @@ import { useState } from "react";
 import { noteMap } from "./assets/audio/noteMap.ts";
 import LandingScreen from "./components/LandingScreen";
 import GameScreen from "./components/GameScreen";
+import GameOverScreen from "./components/GameOverScreen";
 
 const BASE_URL = "http://127.0.0.1:8000";
 
@@ -19,9 +20,11 @@ const App = () => {
   const [hasGameStarted, setStartGame] = useState(false);
   const [gameOver, setGameOver] = useState(false);
   const [gameId, setGameId] = useState("");
-  const [score, setScore] = useState(-1);
-  const [lives, setLives] = useState(-1);
+  const [score, setScore] = useState(0);
+  const [lives, setLives] = useState(3);
   const [currentNote, setCurrentNote] = useState("");
+  const [playScoreUp, setPlayScoreUp] = useState(false);
+  const [playLifeLoss, setPlayLifeLoss] = useState(false);
 
   const startGame = async () => {
     setStartGame(true);
@@ -47,14 +50,32 @@ const App = () => {
     const updated_game = await response.json();
 
     if (updated_game.lives === 0) {
+      //Game over check
       noteAudio?.pause();
       setGameOver(true);
       return;
     }
 
+    if (updated_game.lives < lives) {
+      //Update score animation
+      setPlayLifeLoss(true);
+
+      setTimeout(() => {
+        setPlayLifeLoss(false);
+      }, 300);
+    }
+
+    if (updated_game.score > score) {
+      //Update life animation
+      setPlayScoreUp(true);
+
+      setTimeout(() => {
+        setPlayScoreUp(false);
+      }, 300);
+    }
+
     playNote(updated_game.current_note);
     setCurrentNote(updated_game.current_note);
-
     setScore(updated_game.score);
     setLives(updated_game.lives);
   };
@@ -69,12 +90,14 @@ const App = () => {
           lives={lives}
           currentNote={currentNote}
           updateGame={updateGame}
+          playScoreUp={playScoreUp}
+          playLifeLoss={playLifeLoss}
         />
       )}
 
       {gameOver && (
         <>
-          <Score name="Final Score" score={score} />
+          <GameOverScreen /> {/* Currently empty */}
         </>
       )}
     </>

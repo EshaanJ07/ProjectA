@@ -1,5 +1,6 @@
 interface Props {
   count: number;
+  playLifeLoss: boolean;
 }
 
 const lifeColors: Record<number, string> = {
@@ -9,12 +10,14 @@ const lifeColors: Record<number, string> = {
   [-1]: "text-[#10B981]",
 };
 
-const Lives = ({ count }: Props) => {
+const Lives = ({ count, playLifeLoss }: Props) => {
   return (
     <div className="flex items-center gap-3">
       <span className="font-normal text-[25px]">lives</span>
       <div className="h-16 border border-[#000000]"></div>
-      <span className={`w-5 font-medium ${lifeColors[count]} text-[30px]`}>
+      <span
+        className={`w-5 font-medium ${lifeColors[count]} text-[30px] ${playLifeLoss ? "animate-life-shake" : ""}`}
+      >
         {count}
       </span>
     </div>

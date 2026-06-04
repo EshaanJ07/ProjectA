@@ -11,9 +11,17 @@ interface Props {
   lives: number;
   currentNote: string;
   updateGame: (decision: "new" | "seen") => void;
+  playScoreUp: boolean;
+  playLifeLoss: boolean;
 }
 
-const GameScreen = ({ score, lives, updateGame }: Props) => {
+const GameScreen = ({
+  score,
+  lives,
+  updateGame,
+  playScoreUp,
+  playLifeLoss,
+}: Props) => {
   return (
     <>
       <>
@@ -24,8 +32,8 @@ const GameScreen = ({ score, lives, updateGame }: Props) => {
           </div>
 
           <div className="flex justify-center my-10 h-20 gap-20 border-2 border-[#000000] w-fit px-5 rounded-[25px] mx-auto translate-y-5">
-            <Score name="Score" score={score} />
-            <Lives count={lives} />
+            <Score name="Score" score={score} playScoreUp={playScoreUp} />
+            <Lives count={lives} playLifeLoss={playLifeLoss} />
           </div>
 
           <div className="flex-center my-5">
