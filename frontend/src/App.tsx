@@ -119,7 +119,7 @@ const App = () => {
 
       {gameOver && (
         <>
-          <GameOverScreen /> {/* Currently empty */}
+          <GameOverScreen score={score} /> {/* Needs UI implementation */}
         </>
       )}
     </>
