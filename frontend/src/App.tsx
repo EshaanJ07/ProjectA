@@ -1,4 +1,3 @@
-import Score from "./components/Score";
 import { useState } from "react";
 import { noteMap } from "./assets/audio/noteMap.ts";
 import LandingScreen from "./components/LandingScreen";
@@ -25,7 +24,24 @@ const App = () => {
   const [currentNote, setCurrentNote] = useState("");
   const [playScoreUp, setPlayScoreUp] = useState(false);
   const [playLifeLoss, setPlayLifeLoss] = useState(false);
+  const [playAudioRipple, setPlayAudioRipple] = useState(false);
+  const [isDisabled, setIsDisabled] = useState(false);
 
+  const ActivateAudioRipple = () => {
+    //Plays Audio Ripple animation
+    setPlayAudioRipple(true);
+    setTimeout(() => {
+      setPlayAudioRipple(false);
+    }, 800);
+  };
+
+  const DisableButtonsTemporarily = () => {
+    //Disables buttons (targetting New and Heard) for same time as audio ripple animation
+    setIsDisabled(true);
+    setTimeout(() => {
+      setIsDisabled(false);
+    }, 800);
+  };
   const startGame = async () => {
     setStartGame(true);
 
@@ -34,6 +50,8 @@ const App = () => {
     const new_game = await response.json();
 
     playNote(new_game.current_note);
+    ActivateAudioRipple();
+    DisableButtonsTemporarily();
     setCurrentNote(new_game.current_note);
     setGameId(new_game.game_id);
     setScore(new_game.score);
@@ -75,6 +93,8 @@ const App = () => {
     }
 
     playNote(updated_game.current_note);
+    ActivateAudioRipple();
+    DisableButtonsTemporarily();
     setCurrentNote(updated_game.current_note);
     setScore(updated_game.score);
     setLives(updated_game.lives);
@@ -92,6 +112,8 @@ const App = () => {
           updateGame={updateGame}
           playScoreUp={playScoreUp}
           playLifeLoss={playLifeLoss}
+          playAudioRipple={playAudioRipple}
+          isDisabled={isDisabled}
         />
       )}
 

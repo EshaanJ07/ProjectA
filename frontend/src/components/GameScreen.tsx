@@ -13,6 +13,8 @@ interface Props {
   updateGame: (decision: "new" | "seen") => void;
   playScoreUp: boolean;
   playLifeLoss: boolean;
+  playAudioRipple: boolean;
+  isDisabled: boolean;
 }
 
 const GameScreen = ({
@@ -21,6 +23,8 @@ const GameScreen = ({
   updateGame,
   playScoreUp,
   playLifeLoss,
+  playAudioRipple,
+  isDisabled,
 }: Props) => {
   return (
     <>
@@ -37,18 +41,22 @@ const GameScreen = ({
           </div>
 
           <div className="flex-center my-5">
-            <AudioCircle />
+            <AudioCircle playAudioRipple={playAudioRipple} />
           </div>
           <div className="flex justify-center gap-5">
             <Button
               name="new"
               hoverVariant="blue"
               onClick={() => updateGame("new")}
+              isDisabled={isDisabled}
+              disabled={isDisabled}
             />
             <Button
               name="heard"
               hoverVariant="red"
               onClick={() => updateGame("seen")}
+              isDisabled={isDisabled}
+              disabled={isDisabled}
             />
           </div>
 
