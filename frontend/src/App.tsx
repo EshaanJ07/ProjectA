@@ -4,7 +4,7 @@ import LandingScreen from "./components/LandingScreen";
 import GameScreen from "./components/GameScreen";
 import GameOverScreen from "./components/GameOverScreen";
 
-const BASE_URL = "http://127.0.0.1:8000";
+const BASE_URL = "http://192.168.1.250:8000";
 
 let noteAudio: HTMLAudioElement | null = null;
 
