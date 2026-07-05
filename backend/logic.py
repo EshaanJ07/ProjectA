@@ -7,7 +7,7 @@ NOTE_TYPES = ["C", "Cs", "D", "Ds", "E", "F", "Fs", "G", "Gs", "A", "As", "B"]
 
 
 def generate_game_notes(octave_start: int, octave_end: int) -> list[str]:
-    """Generates the list of notes to be used during a game session, from octave_start to octave_end, inclusive."""
+    """Generates the list of notes to be used during a game session, from octave_start to octave_end, inclusive. Note that octave 8 only has the note C8."""
 
     if octave_end < octave_start:
         raise ValueError("octave_end must be greater than or equal to octave_start")
@@ -16,13 +16,16 @@ def generate_game_notes(octave_start: int, octave_end: int) -> list[str]:
 
     notes = []
     for octave in range(octave_start, octave_end + 1):
+        if octave == 8:
+            notes.append("C8")
+            continue
         for note_type in NOTE_TYPES:
             notes.append(f"{note_type}{octave}")
 
     return notes
 
 
-NOTES = generate_game_notes(3, 5)  # Generates notes from C3 to B5
+NOTES = generate_game_notes(1, 8)  # Generates notes from C1 to C8
 
 
 def create_game() -> Game:
@@ -71,5 +74,5 @@ def get_next_note(current_game: Game) -> str:
             if unseen_notes
             else random.choice(current_game.seen_notes)
         )
-
+    
     return next_note
