@@ -25,7 +25,7 @@ def generate_game_notes(octave_start: int, octave_end: int) -> list[str]:
     return notes
 
 
-NOTES = generate_game_notes(1, 8)  # Generates notes from C1 to C8
+ALL_GAME_NOTES = generate_game_notes(1, 8)  # Generates notes from C1 to C8
 
 
 def create_game() -> Game:
@@ -34,7 +34,7 @@ def create_game() -> Game:
         game_id=str(uuid4()),
         lives=3,
         score=0,
-        current_note=random.choice(NOTES),
+        current_note=random.choice(ALL_GAME_NOTES),
     )
 
     return new_game
@@ -42,37 +42,40 @@ def create_game() -> Game:
 
 def update_game(answer: str, current_game: Game) -> Game:
     """Updating the game state based on user answer."""
-    if current_game.current_note in current_game.seen_notes:
-        correct = "seen"
-    else:
-        correct = "new"
-
-    if answer == correct:
+    is_new = current_game.current_note not in current_game.seen_notes
+    correct_ans = "new" if is_new else "seen"
+    
+    if answer == correct_ans:
         current_game.score += 1
     else:
         current_game.lives -= 1
-        if current_game.lives == 0:
+        if current_game.lives <= 0:
             return current_game  # Game ends, no new note is generated
-
-    current_game.seen_notes.append(current_game.current_note)
+    
+    if is_new:
+        current_game.seen_notes.add(current_game.current_note)
+        current_game.seen_order.append(current_game.current_note)
+    
     current_game.current_note = get_next_note(current_game)
 
     return current_game
 
 
 def get_next_note(current_game: Game) -> str:
-    """Generating a new random note with a 50/50 chance of being a seen or unseen note."""
-    next_seen = random.choice([True, False])
+    """Generating a new random note with a 50/50 chance of being a seen or unseen note. Requires seen_order to be non-empty."""
+    if not current_game.seen_order:
+        raise ValueError("seen_order cannot be empty")
 
-    if next_seen:
-        next_note = random.choice(current_game.seen_notes)
+    is_next_seen = random.choice([True, False])
+
+    if is_next_seen:
+        next_note = random.choice(current_game.seen_order)
     else:
-        seen_notes = set(current_game.seen_notes)
-        unseen_notes = [note for note in NOTES if note not in seen_notes]
+        unseen_notes = [note for note in ALL_GAME_NOTES if note not in current_game.seen_notes]
         next_note = (
             random.choice(unseen_notes)
             if unseen_notes
-            else random.choice(current_game.seen_notes)
+            else random.choice(current_game.seen_order)
         )
     
     return next_note
