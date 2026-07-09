@@ -102,6 +102,12 @@ const App = () => {
     setLives(updated_game.lives);
   };
 
+  const replayNote = (currentNote: string) => {
+    playNote(currentNote);
+    ActivateAudioRipple();
+    DisableButtonsTemporarily();
+  };
+
   return (
     <>
       {!hasGameStarted && <LandingScreen startGame={startGame} />}
@@ -116,6 +122,7 @@ const App = () => {
           playLifeLoss={playLifeLoss}
           playAudioRipple={playAudioRipple}
           isDisabled={isDisabled}
+          replayNote={replayNote}
         />
       )}
 

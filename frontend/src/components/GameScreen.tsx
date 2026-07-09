@@ -5,6 +5,7 @@ import Footer from "./Footer";
 import Score from "./Score";
 import Lives from "./Lives";
 import Button from "./Button";
+import ReplayNoteButton from "./ReplayNoteButton";
 
 interface Props {
   score: number;
@@ -15,16 +16,19 @@ interface Props {
   playLifeLoss: boolean;
   playAudioRipple: boolean;
   isDisabled: boolean;
+  replayNote: (currentNote: string) => void;
 }
 
 const GameScreen = ({
   score,
   lives,
+  currentNote,
   updateGame,
   playScoreUp,
   playLifeLoss,
   playAudioRipple,
   isDisabled,
+  replayNote,
 }: Props) => {
   return (
     <>
@@ -42,6 +46,12 @@ const GameScreen = ({
 
           <div className="flex-center my-5">
             <AudioCircle playAudioRipple={playAudioRipple} />
+          </div>
+          <div>
+            <ReplayNoteButton
+              onClick={() => replayNote(currentNote)}
+              isDisabled={isDisabled}
+            />
           </div>
           <div className="flex justify-center gap-5">
             <Button
